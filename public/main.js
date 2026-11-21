@@ -9,12 +9,6 @@
 import { getForecast } from "./api.js";
 import { isGoodDay, summarize, reasons } from "./logic.js";
 
-const CITIES = {
-  seoul: { name: "Seoul", lat: 37.566, lon: 126.9784 },
-  daejeon: { name: "Daejeon", lat: 36.3504, lon: 127.3845 },
-  gangneung: { name: "Gangneung", lat: 37.7519, lon: 128.8761 },
-};
-
 // P1. 요소는 처음에 한 번만 찾아 둠. 선택자 오타면 null 이 되고,
 // 나중에 statusEl.textContent 에서 "Cannot set properties of null" 로 터짐.
 const form = document.querySelector("#run-form");
@@ -66,13 +60,12 @@ function render() {
 // min/max/required 검사도 submit 쪽에서 일어남.
 form.addEventListener("submit", async (event) => {
   event.preventDefault(); // 안 하면 페이지가 새로 고쳐져서 주소가 /? 로 바뀌고 아무것도 안 남음
-  const city = CITIES[citySelect.value];
   statusEl.textContent = "Loading...";
   statusEl.classList.remove("error");
   try {
-    const daily = await getForecast(city);
+    const { city, days } = await getForecast(citySelect.value);
     state.city = city;
-    state.days = toDays(daily);
+    state.days = days;
     statusEl.textContent = "";
   } catch (err) {
     // 실패하면 state 를 그대로 둠. 이전 도시 표가 남는 게 빈 화면보다 나음.
