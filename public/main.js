@@ -7,7 +7,7 @@
 // 실행: P0 ~ P3 은 npx serve public, P4 부터는 npm start → 브라우저에서 http://localhost:3000
 // 커밋 메시지: p5: forecast
 import { getForecast } from "./api.js";
-import { toDays, isGoodDay, summarize, reasons } from "./logic.js";
+import { isGoodDay, summarize, reasons } from "./logic.js";
 
 const CITIES = {
   seoul: { name: "Seoul", lat: 37.566, lon: 126.9784 },
@@ -56,7 +56,7 @@ function dayRow(day) {
 
 function render() {
   summaryEl.textContent = state.city
-    ? `${state.city.name}: ${summarize(state.days, state.limits)}.`
+    ? `${state.city}: ${summarize(state.days, state.limits)}.`
     : "";
   // append 만 하면 Check 를 누를 때마다 줄이 7개씩 쌓임. 통째로 갈아 끼움.
   rowsEl.replaceChildren(...state.days.map(dayRow));
